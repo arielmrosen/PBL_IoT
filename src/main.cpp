@@ -50,9 +50,59 @@ WebServer server(80); // lab 7
 
 const char* ssid = ""; // lab7
 const char* password = "password";
+uint8_t byte; //byte recording states
+unsigned long buzzerStartTime = 0; //buzzer start time
+const unsigned long buzzerDuration = 3000; //duration for buzzer
+bool buzzerOn = false;
 
-// functions 
+// Functions 
 
+	//Bitwise Manipulation
+
+	void setBit0(){ //set bit 0 to 1
+		byte |= 0b00000001;
+	}
+
+	void setBit1(){ //set bit 1 to 1
+		byte |= 0b00000010;
+	}
+
+	void setBit2(){ //set bit 2 to 1
+		byte |= 0b00000100;
+	}
+
+	void clearBit0(){ //clear bit 0
+		byte &= ~(1 << 0);
+	}
+
+	void clearBit1(){
+		byte &= ~(1 << 1); //clear bit 1
+	}
+
+	void clearBit2(){
+		byte &= ~(1 << 2); //clear bit 2
+	}
+
+	// Room Occupation & Authorization
+	
+	void authorizedEntry() { 
+		digitalWrite(GREEN_LED, HIGH);
+		digitalWrite(RED_LED, LOW);
+		setBit0();
+		//track time somehow
+	}
+
+	void unauthorizedEntry(){
+		digitalWrite (GREEN_LED, LOW);
+		digitalWrite (RED_LED, HIGH);
+		//track time somehow
+	}
+
+	void emptyRoom(){ //used when authorizedEntry is not being used
+		digitalWrite (GREEN_LED, LOW);
+		digitalWrite (RED_LED, LOW);
+		clearBit0; //clear bit 0
+	}
 
 void setup() {
 
@@ -62,6 +112,11 @@ void setup() {
 
     server.begin();
 	Serial.println("web server started");
+
+	pinMode(GREEN_LED, OUTPUT); //set green led as an output
+	pinMode(RED_LED, OUTPUT); //set red led as an output
+	pinMode(BUZZER, OUTPUT); //set buzzer as an output
+
 }
 
 void loop() {
