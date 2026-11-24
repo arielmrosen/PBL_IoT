@@ -53,7 +53,7 @@ const char* password = "password";
 uint8_t byte; //byte recording states
 unsigned long buzzerStartTime = 0; //buzzer start time
 const unsigned long buzzerDuration = 3000; //duration for buzzer
-bool buzzerOn = false;
+bool buzzerOn = false; //buzzer on or off status, make an ISR
 
 // Functions 
 
